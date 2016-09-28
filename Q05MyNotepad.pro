@@ -11,6 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = Q05MyNotepad
 TEMPLATE = app
 
+RC_ICONS = ccat.ico
 
 SOURCES += main.cpp\
         mainwindow.cpp \

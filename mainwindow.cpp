@@ -52,6 +52,37 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    // 如果当前文本被改变
+    if(ui->textEdit->document()->isModified())
+    {
+        qDebug()<<QStringLiteral("被改变");
+        QMessageBox::StandardButton button=QMessageBox::information(this,QStringLiteral("记事本"),QStringLiteral("是否保存"),QMessageBox::Save|QMessageBox::No|QMessageBox::Cancel);
+
+        if(button==QMessageBox::Save)
+        {
+            bool result=saveFileSlot();
+            if(result)// 保存成功则关闭 不成功不关闭
+            {
+                event->accept();
+            }else
+            {
+                event->ignore();
+            }
+        }else if(button==QMessageBox::No)
+        {
+           event->accept();
+        }else if(button==QMessageBox::Cancel)
+        {
+            event->ignore();// 忽略事件
+        }
+    }else
+    {
+        event->accept();
+    }
+}
 // 新建
 void MainWindow::newFileSlot()
 {
@@ -116,14 +147,14 @@ void MainWindow::openFileSlot()
 }
 
 // 保存文件  另存为操作
-void MainWindow::saveAsFileSlot()
+bool MainWindow::saveAsFileSlot()
 {
     // 类型过滤使用 ;; 分开
     QString filepath=QFileDialog::getSaveFileName(this,"save",QDir::currentPath(),"Text files(*.txt);;All files(*.*)");
     if(filepath.isEmpty())
     {
         QMessageBox::information(this,"Info","please select a file");
-        return;
+        return false;
     }
     // 默认保存路径设置为保存路径
     saveFilePath=filepath;
@@ -145,19 +176,20 @@ void MainWindow::saveAsFileSlot()
         ui->textEdit->document()->setModified(false);
         file->close();
         delete file;
+        return true;
     }else
     {
         QMessageBox::information(this,"Info","File save fail"+file->errorString());
-        return;
+        return false;
     }
 }
 
 //  直接保存
-void MainWindow::saveFileSlot()
+bool MainWindow::saveFileSlot()
 {
     if(saveFilePath.isEmpty())
     {
-        saveAsFileSlot();
+        return saveAsFileSlot();
     }else
     {
         QFileInfo info=QFileInfo(saveFilePath);
@@ -177,10 +209,11 @@ void MainWindow::saveFileSlot()
             ui->textEdit->document()->setModified(false);
             file->close();
             delete file;
+            return true;
         }else
         {
             QMessageBox::information(this,"Info","File save fail"+file->errorString());
-            return;
+            return false;
         }
     }
 }
@@ -271,6 +304,7 @@ void MainWindow::aboutSoftwareSlot()
 }
 
 // 用于退出时的检查  对mainwindow有效  对程序关闭无效 需改善
+// FIXME 直接调用closeEvent？
 void MainWindow::checkModifySlot()
 {
     // 如果当前文本被改变
@@ -285,17 +319,15 @@ void MainWindow::checkModifySlot()
             saveFileSlot();
         }else if(button==QMessageBox::No)
         {
-            //            ui->textEdit->clear();
-            //            this->setWindowTitle(QStringLiteral("无标题-记事本"));
-            //            saveFilePath="";// 新建时默认路径置空
-            this->close();
+            qApp->quit();//退出程序
+//            this->close();// 会进入 closeEvent中判断
         }else if(button==QMessageBox::Cancel)
         {
             return;
         }
     }else
     {
-        this->close();
+        this->close();// 因为未修改  所以进入closeEvent也是退出
     }
 }
 

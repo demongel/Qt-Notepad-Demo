@@ -26,6 +26,8 @@
 #include <QtMultimedia/QMediaPlayer>
 #include <ActiveQt/QAxObject>
 #include <QSplashScreen>
+// 关闭事件都是受保护的。
+#include <QCloseEvent>
 
 
 namespace Ui {
@@ -39,13 +41,15 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    void closeEvent();
+
+protected :
+    void closeEvent(QCloseEvent *event);
 
 private slots:
     void newFileSlot();
     void openFileSlot();
-    void saveAsFileSlot();// 另存为
-    void saveFileSlot();// 直接保存
+    bool saveAsFileSlot();// 另存为
+    bool saveFileSlot();// 直接保存
     void printSlot();
 
     void setFontSlot();
