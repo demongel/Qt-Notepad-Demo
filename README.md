@@ -4,4 +4,4 @@
 
 效果图
 
-![image](https://github.com/demongel/Qt-Notepad-Demo/notepad.png)
+![image](https://github.com/demongel/Qt-Notepad-Demo/blob/master/notepad.png)
