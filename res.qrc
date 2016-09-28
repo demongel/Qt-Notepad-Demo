@@ -1,11 +1,5 @@
 <RCC>
     <qresource prefix="/images">
-        <file>images/0x1f3ad.png</file>
-        <file>images/0x1f3ae.png</file>
-        <file>images/0x1f3af.png</file>
-        <file>images/0x1f3b0.png</file>
-        <file>images/0x1f3b1.png</file>
-        <file>images/0x1f3b2.png</file>
         <file>images/0x1f600.png</file>
         <file>images/0x1f601.png</file>
         <file>images/0x1f602.png</file>
@@ -31,7 +25,8 @@
         <file>images/0x1f622.png</file>
         <file>images/0x1f623.png</file>
         <file>images/0x1f624.png</file>
-        <file>images/0x1f625.png</file>
+        <file>images/loading gif.gif</file>
+        <file>images/loading.png</file>
     </qresource>
     <qresource prefix="/mac">
         <file>mac/editcopy.png</file>

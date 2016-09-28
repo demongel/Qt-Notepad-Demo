@@ -23,6 +23,9 @@
 #include "about.h"
 
 #include <QMovie>
+#include <QtMultimedia/QMediaPlayer>
+#include <ActiveQt/QAxObject>
+#include <QSplashScreen>
 
 
 namespace Ui {
